@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
-    private Vector2 _direction = Vector2.zero; //initial sta pe loc ->.right
+    private Vector2 _direction = Vector2.zero; 
 
     private void Update()
     {
