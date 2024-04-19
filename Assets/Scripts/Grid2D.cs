@@ -54,6 +54,12 @@ public class Grid2D : MonoBehaviour
 
     private void Start()
     {
+        //CreateGrid();
+        GenerateItem(numberOfBonuses, PointPrefab, "Bonus");
+    }
+
+    private void Update()
+    {
         CreateGrid();
     }
 
@@ -71,7 +77,6 @@ public class Grid2D : MonoBehaviour
                 grid[x, y] = new Node(walkable, worldPoint, x, y);
             }
         }
-        GenerateItem(numberOfBonuses, PointPrefab, "Bonus");
     }
 
     public List<Node> GetNeighbours(Node node)
@@ -134,8 +139,11 @@ public class Grid2D : MonoBehaviour
             int i = 0;
             foreach (var bonus in bonuses)
             {
-                bonusesNodes[i] = NodeFromWorldPoint(bonus.position);
-                i++;
+                if (bonus.gameObject.activeSelf)
+                {
+                    bonusesNodes[i] = NodeFromWorldPoint(bonus.position);
+                    i++;
+                }
             }
 
             foreach (Node node in grid)
