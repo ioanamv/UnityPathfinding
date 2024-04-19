@@ -6,17 +6,57 @@ public class Pathfinding : MonoBehaviour
 {
     Grid2D grid;
     public Transform seeker, target;
+    public Transform opponent;
+
+    private GameObject nearestBonus;
+    private GameObject[] bonuses;
+
+    private void Start()
+    {
+        bonuses = GameObject.FindGameObjectsWithTag("Bonus");
+        //nearestBonus = FindNearestBonus(bonuses);
+        //if (nearestBonus != null)
+        //{
+        //    List<Node> path = FindPath(opponent.position, nearestBonus.transform.position);
+        //}
+    }
 
     private void Update()
     {
-        FindPath(seeker.position, target.position);
+        //FindPath(seeker.position, target.position);
+        nearestBonus = FindNearestBonus(bonuses);
+        if (nearestBonus != null)
+        {
+            List<Node> path = FindPath(opponent.position, nearestBonus.transform.position);
+        }
     }
+
     private void Awake()
     {
         grid = GetComponent<Grid2D>();
     }
 
-    void FindPath(Vector3 startPos, Vector3 targetPos)
+    GameObject FindNearestBonus(GameObject[] bonuses)
+    {
+        GameObject nearestBonus = null;
+        float shortestDistance = Mathf.Infinity;
+
+        foreach (GameObject bonus in bonuses)
+        {
+            if (bonus.activeSelf)
+            {
+                float distace = Vector3.Distance(opponent.position, bonus.transform.position);
+                if (distace < shortestDistance)
+                {
+                    shortestDistance = distace;
+                    nearestBonus = bonus;
+                }
+            }
+        }
+        return nearestBonus;
+    }
+
+    List<Node> FindPath(Vector3 startPos, Vector3 targetPos)
     {
         Node startNode = grid.NodeFromWorldPoint(startPos);
         Node targetNode = grid.NodeFromWorldPoint(targetPos);
@@ -41,7 +81,7 @@ public class Pathfinding : MonoBehaviour
             if (currentNode == targetNode)
             {
                 RetracePath(startNode, targetNode);
-                return;
+                return RetracePath(startNode, targetNode);
             }
 
             foreach (Node neighbour in grid.GetNeighbours(currentNode))
@@ -65,9 +105,10 @@ public class Pathfinding : MonoBehaviour
                 }
             }
         }
+        return new List<Node>();
     }
 
-    void RetracePath(Node startNode, Node endNode)
+    List<Node> RetracePath(Node startNode, Node endNode)
     {
         List<Node> path = new List<Node>();
         Node currentNode = endNode;
@@ -80,6 +121,7 @@ public class Pathfinding : MonoBehaviour
         path.Reverse();
 
         grid.path = path;
+        return path;
     }
 
     int GetDistance(Node nodeA, Node nodeB)
@@ -88,11 +130,7 @@ public class Pathfinding : MonoBehaviour
         int distY = Mathf.Abs(nodeA.gridY - nodeB.gridY);
 
         return 10 * (distX + distY);
-
-        //if (!(distX > distY))
-        //{
-        //    return 14 * distY + 10 * (distX - distY);
-        //}
-        //return 14 * distX + 10 * (distY - distX);
     }
 }
+
+//pozitia bonusurilor la start

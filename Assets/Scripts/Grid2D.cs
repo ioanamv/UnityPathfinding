@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Grid2D : MonoBehaviour
 {
-    public Transform player;
+    public Transform player, opponent;
+    public Transform[] bonuses;
     public LayerMask unwalkableMask;
     public Vector2Int gridSize;
     public Vector2 nodeSize;
@@ -12,6 +15,42 @@ public class Grid2D : MonoBehaviour
     Node[,] grid;
 
     public List<Node> path;
+
+
+
+    public BoxCollider2D gridArea;
+    public int numberOfBonuses = 10;
+    public GameObject PointPrefab;
+
+    public void GenerateItem(int numberOfItems, GameObject itemPrefab, string tag)
+    {
+        Bounds bounds = this.gridArea.bounds;
+
+        //
+        bonuses = new Transform[numberOfItems];
+        for (int i = 0; i < numberOfItems; i++)
+        {
+            bool positionOccupied = true;
+            Vector3 newPosition = Vector3.zero;
+
+            while (positionOccupied)
+            {
+                float x = Random.Range(bounds.min.x, bounds.max.x);
+                float y = Random.Range(bounds.min.y, bounds.max.y);
+
+                newPosition = new Vector3(Mathf.Round(x), Mathf.Round(y), 0);
+
+                Collider2D[] colliders = Physics2D.OverlapBoxAll(newPosition, itemPrefab.GetComponent<SpriteRenderer>().bounds.size, 0);  //(newPosition, 0.1f);
+                positionOccupied = colliders.Any(c => c.CompareTag("Player") || c.CompareTag("Bonus") || c.CompareTag("Obstacle"));
+            }
+
+            GameObject item = Instantiate(itemPrefab, newPosition, Quaternion.identity);
+            item.tag = tag;
+            item.transform.position = newPosition;
+
+            bonuses[i] = item.transform;
+        }
+    }
 
     private void Start()
     {
@@ -32,6 +71,7 @@ public class Grid2D : MonoBehaviour
                 grid[x, y] = new Node(walkable, worldPoint, x, y);
             }
         }
+        GenerateItem(numberOfBonuses, PointPrefab, "Bonus");
     }
 
     public List<Node> GetNeighbours(Node node)
@@ -88,6 +128,16 @@ public class Grid2D : MonoBehaviour
         if (grid != null)
         {
             Node playerNode = NodeFromWorldPoint(player.position);
+            Node opponentNode = NodeFromWorldPoint(opponent.position);
+            Node[] bonusesNodes = new Node[bonuses.Length];
+
+            int i = 0;
+            foreach (var bonus in bonuses)
+            {
+                bonusesNodes[i] = NodeFromWorldPoint(bonus.position);
+                i++;
+            }
+
             foreach (Node node in grid)
             {
                 Gizmos.color = (node.walkable) ? Color.white : Color.red;
@@ -96,15 +146,28 @@ public class Grid2D : MonoBehaviour
                     Gizmos.color = Color.cyan;
                 }
 
-                if (path!=null)
+                if (opponentNode == node)
+                {
+                    Gizmos.color = Color.magenta;
+                }
+
+                foreach (var bonusNode in bonusesNodes)
+                {
+                    if (bonusNode != null && bonusNode == node)
+                    {
+                        Gizmos.color = Color.green;
+                    }
+                }
+
+                if (path != null)
                 {
                     if (path.Contains(node))
                     {
                         Gizmos.color = Color.black;
                     }
                 }
-                Gizmos.DrawCube(node.worldPosition, nodeSize-new Vector2(0.1f, 0.1f));
 
+                Gizmos.DrawCube(node.worldPosition, nodeSize - new Vector2(0.1f, 0.1f));
             }
         }
     }
