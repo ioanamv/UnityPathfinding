@@ -5,7 +5,6 @@ using UnityEngine;
 public class Pathfinding : MonoBehaviour
 {
     Grid2D grid;
-    public Transform seeker, target;
     public Transform opponent;
 
     private GameObject nearestBonus;
@@ -14,19 +13,19 @@ public class Pathfinding : MonoBehaviour
     private void Start()
     {
         bonuses = GameObject.FindGameObjectsWithTag("Bonus");
-        //nearestBonus = FindNearestBonus(bonuses);
-        //if (nearestBonus != null)
-        //{
-        //    List<Node> path = FindPath(opponent.position, nearestBonus.transform.position);
-        //}
+        nearestBonus = FindNearestBonus(bonuses);
+        if (nearestBonus != null)
+        {
+            List<Node> path = FindPath(opponent.position, nearestBonus.transform.position);
+        }
     }
 
     private void Update()
     {
-        //FindPath(seeker.position, target.position);
-        nearestBonus = FindNearestBonus(bonuses);
-        if (nearestBonus != null)
+        var newNearestBonus = FindNearestBonus(bonuses);
+        if (newNearestBonus != nearestBonus && newNearestBonus != null)
         {
+            nearestBonus=newNearestBonus;
             List<Node> path = FindPath(opponent.position, nearestBonus.transform.position);
         }
     }
@@ -132,5 +131,3 @@ public class Pathfinding : MonoBehaviour
         return 10 * (distX + distY);
     }
 }
-
-//pozitia bonusurilor la start

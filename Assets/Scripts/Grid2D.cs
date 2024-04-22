@@ -16,8 +16,6 @@ public class Grid2D : MonoBehaviour
 
     public List<Node> path;
 
-
-
     public BoxCollider2D gridArea;
     public int numberOfBonuses = 10;
     public GameObject PointPrefab;
@@ -54,14 +52,15 @@ public class Grid2D : MonoBehaviour
 
     private void Start()
     {
-        //CreateGrid();
+        CreateGrid();
         GenerateItem(numberOfBonuses, PointPrefab, "Bonus");
     }
 
     private void Update()
     {
-        CreateGrid();
+        //CreateGrid();
     }
+
 
     void CreateGrid()
     {
