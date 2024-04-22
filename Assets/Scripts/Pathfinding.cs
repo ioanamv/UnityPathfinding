@@ -22,13 +22,12 @@ public class Pathfinding : MonoBehaviour
 
     private void Update()
     {
-        var newNearestBonus = FindNearestBonus(bonuses);
-        if (newNearestBonus != nearestBonus && newNearestBonus != null)
+        nearestBonus = FindNearestBonus(bonuses);
+        if (nearestBonus != null)
         {
-            nearestBonus=newNearestBonus;
             List<Node> path = FindPath(opponent.position, nearestBonus.transform.position);
         }
-    }
+   }
 
     private void Awake()
     {

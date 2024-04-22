@@ -20,6 +20,8 @@ public class Grid2D : MonoBehaviour
     public int numberOfBonuses = 10;
     public GameObject PointPrefab;
 
+    private Vector3 previousPlayerPosition;
+
     public void GenerateItem(int numberOfItems, GameObject itemPrefab, string tag)
     {
         Bounds bounds = this.gridArea.bounds;
@@ -54,15 +56,28 @@ public class Grid2D : MonoBehaviour
     {
         CreateGrid();
         GenerateItem(numberOfBonuses, PointPrefab, "Bonus");
+        previousPlayerPosition = player.position;
     }
 
     private void Update()
     {
-        //CreateGrid();
+        if (previousPlayerPosition != player.position)
+        {
+            UpdateGrid(player.position, previousPlayerPosition);
+            previousPlayerPosition = player.position;
+        }
     }
 
+    private void UpdateGrid(Vector3 currentPlayerPosition, Vector3 previousPlayerPosition)
+    {
+        Node previousNode = NodeFromWorldPoint(previousPlayerPosition);
+        Node currentNode = NodeFromWorldPoint(currentPlayerPosition);
 
-    void CreateGrid()
+        previousNode.walkable = true;
+        currentNode.walkable = false;
+    }
+
+    private void CreateGrid()
     {
         grid = new Node[gridSize.x, gridSize.y];
         Vector2 worldBottomLeft = transform.position - new Vector3(gridSize.x * nodeSize.x / 2, gridSize.y * nodeSize.y / 2);
@@ -73,6 +88,12 @@ public class Grid2D : MonoBehaviour
             {
                 Vector2 worldPoint = worldBottomLeft + new Vector2(x * nodeSize.x, y * nodeSize.y) + nodeSize / 2;
                 bool walkable = !Physics2D.OverlapBox(worldPoint, nodeSize / 2, 0, unwalkableMask);
+
+                if (Vector2.Distance(worldPoint, player.position)<0.01f)               
+                {
+                    walkable = false;
+                }
+
                 grid[x, y] = new Node(walkable, worldPoint, x, y);
             }
         }
