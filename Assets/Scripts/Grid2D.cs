@@ -26,7 +26,6 @@ public class Grid2D : MonoBehaviour
     {
         Bounds bounds = this.gridArea.bounds;
 
-        //
         bonuses = new Transform[numberOfItems];
         for (int i = 0; i < numberOfItems; i++)
         {

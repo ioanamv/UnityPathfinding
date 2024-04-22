@@ -10,6 +10,11 @@ public class Pathfinding : MonoBehaviour
     private GameObject nearestBonus;
     private GameObject[] bonuses;
 
+    private Vector2 _direction = Vector2.zero;
+    public Transform player;
+
+    private bool playerTurn;
+
     private void Start()
     {
         bonuses = GameObject.FindGameObjectsWithTag("Bonus");
@@ -18,6 +23,7 @@ public class Pathfinding : MonoBehaviour
         {
             List<Node> path = FindPath(opponent.position, nearestBonus.transform.position);
         }
+        playerTurn=true;
     }
 
     private void Update()
@@ -27,7 +33,49 @@ public class Pathfinding : MonoBehaviour
         {
             List<Node> path = FindPath(opponent.position, nearestBonus.transform.position);
         }
-   }
+        //if (playerTurn)
+        //{
+            MovePlayer();
+            playerTurn = false;
+        //}
+    }
+
+    private void MovePlayer()
+    {
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            _direction = Vector2.down;
+            MoveOneStep();
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            _direction = Vector2.up;
+            MoveOneStep();
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            _direction = Vector2.left;
+            MoveOneStep();
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            _direction = Vector2.right;
+            MoveOneStep();
+        }
+    }
+
+    private void MoveOneStep()
+    {
+        Vector3 newPosition = player.position + new Vector3(_direction.x, _direction.y, 0);
+
+        Collider2D[] colliders = Physics2D.OverlapPointAll(newPosition);
+        foreach (var collider in colliders)
+        {
+            if (collider.CompareTag("Obstacle"))
+                return;
+        }
+        player.position = newPosition;
+    }
 
     private void Awake()
     {
