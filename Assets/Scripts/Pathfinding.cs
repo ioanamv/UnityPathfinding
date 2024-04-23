@@ -13,7 +13,7 @@ public class Pathfinding : MonoBehaviour
     private Vector2 _direction = Vector2.zero;
     public Transform player;
 
-    private bool playerTurn;
+    //private bool playerTurn;
 
     private void Start()
     {
@@ -23,7 +23,7 @@ public class Pathfinding : MonoBehaviour
         {
             List<Node> path = FindPath(opponent.position, nearestBonus.transform.position);
         }
-        playerTurn=true;
+        //playerTurn=true;
     }
 
     private void Update()
@@ -35,8 +35,8 @@ public class Pathfinding : MonoBehaviour
         }
         //if (playerTurn)
         //{
-            MovePlayer();
-            playerTurn = false;
+        MovePlayer();
+            //playerTurn = false;
         //}
     }
 
@@ -71,7 +71,7 @@ public class Pathfinding : MonoBehaviour
         Collider2D[] colliders = Physics2D.OverlapPointAll(newPosition);
         foreach (var collider in colliders)
         {
-            if (collider.CompareTag("Obstacle"))
+            if (collider.CompareTag("Obstacle") || collider.CompareTag("Opponent"))
                 return;
         }
         player.position = newPosition;

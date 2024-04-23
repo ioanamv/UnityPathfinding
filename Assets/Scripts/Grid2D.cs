@@ -40,7 +40,7 @@ public class Grid2D : MonoBehaviour
                 newPosition = new Vector3(Mathf.Round(x), Mathf.Round(y), 0);
 
                 Collider2D[] colliders = Physics2D.OverlapBoxAll(newPosition, itemPrefab.GetComponent<SpriteRenderer>().bounds.size, 0);  //(newPosition, 0.1f);
-                positionOccupied = colliders.Any(c => c.CompareTag("Player") || c.CompareTag("Bonus") || c.CompareTag("Obstacle"));
+                positionOccupied = colliders.Any(c => c.CompareTag("Player") || c.CompareTag("Bonus") || c.CompareTag("Obstacle") || c.CompareTag("Opponent"));
             }
 
             GameObject item = Instantiate(itemPrefab, newPosition, Quaternion.identity);
