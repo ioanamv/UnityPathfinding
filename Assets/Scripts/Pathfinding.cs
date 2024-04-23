@@ -14,6 +14,7 @@ public class Pathfinding : MonoBehaviour
     public Transform player;
 
     //private bool playerTurn;
+    private List<Node> path;
 
     private void Start()
     {
@@ -21,7 +22,7 @@ public class Pathfinding : MonoBehaviour
         nearestBonus = FindNearestBonus(bonuses);
         if (nearestBonus != null)
         {
-            List<Node> path = FindPath(opponent.position, nearestBonus.transform.position);
+            path = FindPath(opponent.position, nearestBonus.transform.position);
         }
         //playerTurn=true;
     }
@@ -31,13 +32,32 @@ public class Pathfinding : MonoBehaviour
         nearestBonus = FindNearestBonus(bonuses);
         if (nearestBonus != null)
         {
-            List<Node> path = FindPath(opponent.position, nearestBonus.transform.position);
+            path = FindPath(opponent.position, nearestBonus.transform.position);
         }
         //if (playerTurn)
         //{
         MovePlayer();
-            //playerTurn = false;
+        //playerTurn = false;
         //}
+        MoveOpponent(path);
+    }
+
+    private void MoveOpponent(List<Node> path)
+    {
+        if (path!=null && path.Count > 0)
+        {
+            float moveSpeed = 5f;
+
+            Node nextNode = path[0]; 
+            Vector3 direction=(nextNode.worldPosition - opponent.position).normalized;
+            Vector3 newPosition = opponent.position + direction * moveSpeed * Time.deltaTime;
+            
+            if (Vector3.Distance(opponent.position, nextNode.worldPosition)<0.1f)
+            {
+                path.RemoveAt(0);
+            }
+            opponent.position = newPosition;
+        }
     }
 
     private void MovePlayer()

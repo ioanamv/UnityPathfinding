@@ -6,7 +6,7 @@ public class Point : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "Player" ||collision.tag == "Opponent")
+        if (collision.tag == "Player" || collision.tag == "Opponent")
         {
             gameObject.SetActive(false);
         }
