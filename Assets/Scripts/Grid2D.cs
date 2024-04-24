@@ -67,6 +67,11 @@ public class Grid2D : MonoBehaviour
         }
     }
 
+    public int MaxSize
+    {
+        get { return gridSize.x * gridSize.y; }
+    }
+
     private void UpdateGrid(Vector3 currentPlayerPosition, Vector3 previousPlayerPosition)
     {
         Node previousNode = NodeFromWorldPoint(previousPlayerPosition);
