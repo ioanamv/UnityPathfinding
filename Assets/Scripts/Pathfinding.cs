@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Diagnostics;
+using System.IO;
 
 public class Pathfinding : MonoBehaviour
 {
@@ -30,7 +31,7 @@ public class Pathfinding : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetButton("Jump"))
+        if (HasReachedDestination(path))
         {
             nearestBonus = FindNearestBonus(bonuses);
             if (nearestBonus != null)
@@ -39,19 +40,13 @@ public class Pathfinding : MonoBehaviour
             }
         }
 
-        //nearestBonus = FindNearestBonus(bonuses);
-        //if (nearestBonus != null)
-        //{
-        //    path = FindPath(opponent.position, nearestBonus.transform.position);
-        //}
-
-
-        //if (playerTurn)
-        //{
-        MovePlayer();
-        //playerTurn = false;
-        //}
         MoveOpponent(path);
+        MovePlayer();
+    }
+
+    private bool HasReachedDestination(List<Node> path)
+    {
+        return path != null && path.Count > 0 && Vector3.Distance(opponent.position, path[path.Count - 1].worldPosition) < 0.1f;
     }
 
     private void MoveOpponent(List<Node> path)
