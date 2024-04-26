@@ -15,8 +15,13 @@ public class Pathfinding : MonoBehaviour
     private Vector2 _direction = Vector2.zero;
     public Transform player;
 
-    //private bool playerTurn;
+    private bool playerTurn;
     private List<Node> path;
+
+    private void Awake()
+    {
+        grid = GetComponent<Grid2D>();
+    }
 
     private void Start()
     {
@@ -26,27 +31,19 @@ public class Pathfinding : MonoBehaviour
         {
             path = FindPath(opponent.position, nearestBonus.transform.position);
         }
-        //playerTurn=true;
+        playerTurn=true;
     }
 
     private void Update()
     {
-        if (HasReachedDestination(path))
+        if (playerTurn)
         {
-            nearestBonus = FindNearestBonus(bonuses);
-            if (nearestBonus != null)
-            {
-                path = FindPath(opponent.position, nearestBonus.transform.position);
-            }
+            MovePlayer();
         }
-
-        MoveOpponent(path);
-        MovePlayer();
-    }
-
-    private bool HasReachedDestination(List<Node> path)
-    {
-        return path != null && path.Count > 0 && Vector3.Distance(opponent.position, path[path.Count - 1].worldPosition) < 0.1f;
+        else
+        {
+            MoveOpponent(path);
+        }
     }
 
     private void MoveOpponent(List<Node> path)
@@ -64,6 +61,11 @@ public class Pathfinding : MonoBehaviour
                 path.RemoveAt(0);
             }
             opponent.position = newPosition;
+
+            if (path.Count ==0)
+            {
+                playerTurn = true;
+            }
         }
     }
 
@@ -102,11 +104,13 @@ public class Pathfinding : MonoBehaviour
                 return;
         }
         player.position = newPosition;
-    }
 
-    private void Awake()
-    {
-        grid = GetComponent<Grid2D>();
+        nearestBonus = FindNearestBonus(bonuses);
+        if (nearestBonus != null)
+        {
+            path = FindPath(opponent.position, nearestBonus.transform.position);
+        }
+        playerTurn = false;
     }
 
     GameObject FindNearestBonus(GameObject[] bonuses)
