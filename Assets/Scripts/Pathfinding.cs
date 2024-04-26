@@ -50,22 +50,16 @@ public class Pathfinding : MonoBehaviour
     {
         if (path!=null && path.Count > 0)
         {
-            float moveSpeed = 5f;
-
             Node nextNode = path[0]; 
             Vector3 direction=(nextNode.worldPosition - opponent.position).normalized;
-            Vector3 newPosition = opponent.position + direction * moveSpeed * Time.deltaTime;
+            Vector3 newPosition = opponent.position + direction;
             
             if (Vector3.Distance(opponent.position, nextNode.worldPosition)<0.1f)
             {
                 path.RemoveAt(0);
             }
             opponent.position = newPosition;
-
-            if (path.Count ==0)
-            {
-                playerTurn = true;
-            }
+            playerTurn = true;
         }
     }
 
