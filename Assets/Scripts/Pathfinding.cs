@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 public class Pathfinding : MonoBehaviour
 {
@@ -17,6 +18,8 @@ public class Pathfinding : MonoBehaviour
 
     private bool playerTurn;
     private List<Node> path;
+    private bool endGame;
+    private bool printOnce = true;
 
     private void Awake()
     {
@@ -43,6 +46,12 @@ public class Pathfinding : MonoBehaviour
         else
         {
             MoveOpponent(path);
+        }
+        endGame = EndGame();
+        if (endGame && printOnce)
+        {
+            print("Player score: " + ScoreManager.PlayerScore + "\nOpponent score: " + ScoreManager.OpponentScore);
+            printOnce = false;
         }
     }
 
@@ -125,6 +134,15 @@ public class Pathfinding : MonoBehaviour
             }
         }
         return nearestBonus;
+    }
+
+    private bool EndGame()
+    {
+        if (bonuses.All(b => b.activeSelf == false))
+        {
+            return true;
+        }
+        else return false;
     }
 
     List<Node> FindPath(Vector3 startPos, Vector3 targetPos)
