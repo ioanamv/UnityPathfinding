@@ -39,16 +39,20 @@ public class Pathfinding : MonoBehaviour
 
     private void Update()
     {
-        if (playerTurn)
-        {
-            MovePlayer();
-        }
-        else
-        {
-            MoveOpponent(path);
-        }
         endGame = EndGame();
-        if (endGame && printOnce)
+
+        if (!endGame)
+        {
+            if (playerTurn)
+            {
+                MovePlayer();
+            }
+            else
+            {
+                MoveOpponent(path);
+            }
+        }
+        else if (printOnce)
         {
             print("Player score: " + ScoreManager.PlayerScore + "\nOpponent score: " + ScoreManager.OpponentScore);
             printOnce = false;
@@ -136,15 +140,6 @@ public class Pathfinding : MonoBehaviour
         return nearestBonus;
     }
 
-    private bool EndGame()
-    {
-        if (bonuses.All(b => b.activeSelf == false))
-        {
-            return true;
-        }
-        else return false;
-    }
-
     List<Node> FindPath(Vector3 startPos, Vector3 targetPos)
     {
         Stopwatch sw = new Stopwatch();
@@ -217,5 +212,14 @@ public class Pathfinding : MonoBehaviour
         int distY = Mathf.Abs(nodeA.gridY - nodeB.gridY);
 
         return 10 * (distX + distY);
+    }
+
+    private bool EndGame()
+    {
+        if (bonuses.All(b => b.activeSelf == false))
+        {
+            return true;
+        }
+        else return false;
     }
 }
