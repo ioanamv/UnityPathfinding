@@ -61,18 +61,40 @@ public class Pathfinding : MonoBehaviour
 
     private void MoveOpponent(List<Node> path)
     {
-        if (path!=null && path.Count > 0)
+        if (path != null && path.Count > 0)
         {
-            Node nextNode = path[0]; 
-            Vector3 direction=(nextNode.worldPosition - opponent.position).normalized;
-            Vector3 newPosition = opponent.position + direction;
-            
-            if (Vector3.Distance(opponent.position, nextNode.worldPosition)<0.1f)
+            Node nextNode = path[0];
+            if (nextNode.walkable)
             {
-                path.RemoveAt(0);
+                MoveOpponentOneStep(nextNode);
             }
-            opponent.position = newPosition;
+            else
+            {
+                RecalcultatePath();
+            }
             playerTurn = true;
+        }
+    }
+
+    private void MoveOpponentOneStep(Node nextNode)
+    {
+        Vector3 direction = (nextNode.worldPosition - opponent.position).normalized;
+        Vector3 newPosition = opponent.position + direction;
+
+        if (Vector3.Distance(opponent.position, nextNode.worldPosition) < 0.1f)
+        {
+            path.RemoveAt(0);
+        }
+        opponent.position = newPosition;
+    }
+
+    private void RecalcultatePath()
+    {
+        path = FindPath(opponent.position, nearestBonus.transform.position);
+        if (path != null && path.Count > 0)
+        {
+            Node nextNode = path[0];
+            MoveOpponentOneStep(nextNode);
         }
     }
 
@@ -81,26 +103,26 @@ public class Pathfinding : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             _direction = Vector2.down;
-            MoveOneStep();
+            MovePlayerOneStep();
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             _direction = Vector2.up;
-            MoveOneStep();
+            MovePlayerOneStep();
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             _direction = Vector2.left;
-            MoveOneStep();
+            MovePlayerOneStep();
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             _direction = Vector2.right;
-            MoveOneStep();
+            MovePlayerOneStep();
         }
     }
 
-    private void MoveOneStep()
+    private void MovePlayerOneStep()
     {
         Vector3 newPosition = player.position + new Vector3(_direction.x, _direction.y, 0);
 
