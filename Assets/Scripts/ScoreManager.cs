@@ -8,7 +8,7 @@ public class ScoreManager : MonoBehaviour
     public static int PlayerScore { get; set; }
     public static int OpponentScore { get; set; }
 
-    //public static int NoBonusesPlayer, NoBonusesOpponent, NoRoundsPlayer, NoRoundsOpponent;
+    public static int NoBonusesCollectedPlayer, NoBonusesCollectedOpponent, NoRoundsWonPlayer, NoRoundsWonOpponent;
 
     public static TextMeshProUGUI playerScoreText, opponentScoreText, finalState;
 
@@ -32,25 +32,38 @@ public class ScoreManager : MonoBehaviour
 
     public static void ResetScoresForNextLevel()
     {
-        //NoBonusesPlayer = PlayerScore;
-        //NoBonusesOpponent = OpponentScore;
+        NoBonusesCollectedPlayer += PlayerScore;
+        NoBonusesCollectedOpponent += OpponentScore;
         PlayerScore = 0;
         OpponentScore = 0;
     }
 
-    public static void PrintFinalState(string state)
+    public static void PrintFinalState(int state)
     {
-        //switch (state)
-        //{
-        //    case 0: ScoreText.Instance.finalState.text = "Player wins this round";
-        //        break;
-        //    case 1: ScoreText.Instance.finalState.text = "Opponent wins this round";
-        //        break;
-        //    case 2: ScoreText.Instance.finalState.text = "Draw";
-        //        break;
-        //}
-
-        ScoreText.Instance.finalState.text = state;
+        switch (state)
+        {
+            case 0:
+                ScoreText.Instance.finalState.text = "Player wins this round";
+                NoRoundsWonPlayer++;
+                break;
+            case 1:
+                ScoreText.Instance.finalState.text = "Opponent wins this round";
+                NoRoundsWonOpponent++;
+                break;
+            case 2:
+                ScoreText.Instance.finalState.text = "Draw";
+                NoRoundsWonPlayer++;
+                NoRoundsWonOpponent++;
+                break;
+        }
         ScoreText.Instance.nextLevelButton.gameObject.SetActive(true);
+    }
+
+    public static void ResetScores()
+    {
+        NoBonusesCollectedPlayer = 0;
+        NoBonusesCollectedOpponent = 0;
+        NoRoundsWonPlayer= 0; 
+        NoRoundsWonOpponent = 0;
     }
 }
