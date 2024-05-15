@@ -8,7 +8,9 @@ public class ScoreManager : MonoBehaviour
     public static int PlayerScore { get; set; }
     public static int OpponentScore { get; set; }
 
-    public static TextMeshProUGUI playerScoreText, opponentScoreText;
+    //public static int NoBonusesPlayer, NoBonusesOpponent, NoRoundsPlayer, NoRoundsOpponent;
+
+    public static TextMeshProUGUI playerScoreText, opponentScoreText, finalState;
 
     private void Start()
     {
@@ -26,5 +28,29 @@ public class ScoreManager : MonoBehaviour
     {
         OpponentScore++;
         ScoreText.Instance.opponentScoreText.text = "Opponent score: " + OpponentScore.ToString();
+    }
+
+    public static void ResetScoresForNextLevel()
+    {
+        //NoBonusesPlayer = PlayerScore;
+        //NoBonusesOpponent = OpponentScore;
+        PlayerScore = 0;
+        OpponentScore = 0;
+    }
+
+    public static void PrintFinalState(string state)
+    {
+        //switch (state)
+        //{
+        //    case 0: ScoreText.Instance.finalState.text = "Player wins this round";
+        //        break;
+        //    case 1: ScoreText.Instance.finalState.text = "Opponent wins this round";
+        //        break;
+        //    case 2: ScoreText.Instance.finalState.text = "Draw";
+        //        break;
+        //}
+
+        ScoreText.Instance.finalState.text = state;
+        ScoreText.Instance.nextLevelButton.gameObject.SetActive(true);
     }
 }

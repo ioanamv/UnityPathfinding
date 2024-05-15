@@ -56,6 +56,19 @@ public class Pathfinding : MonoBehaviour
         {
             print("Player score: " + ScoreManager.PlayerScore + "\nOpponent score: " + ScoreManager.OpponentScore);
             printOnce = false;
+            if (ScoreManager.PlayerScore > ScoreManager.OpponentScore)
+            {
+                ScoreManager.PrintFinalState("Player wins this round");
+            }
+            else if (ScoreManager.PlayerScore < ScoreManager.OpponentScore)
+            {
+                ScoreManager.PrintFinalState("Opponent wins this round");
+            }
+            else
+            {
+                ScoreManager.PrintFinalState("Draw");
+            }
+            ScoreManager.ResetScoresForNextLevel();
         }
     }
 
