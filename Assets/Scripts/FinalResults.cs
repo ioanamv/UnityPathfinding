@@ -20,11 +20,11 @@ public class FinalResults : MonoBehaviour
         opponentRounds.text = ScoreManager.NoRoundsWonOpponent.ToString();
         if (ScoreManager.NoRoundsWonPlayer>ScoreManager.NoRoundsWonOpponent)
         {
-            RoundsWinner.text = "Winner for rounds won: Player";
+            RoundsWinner.text = "Winner for rounds won: \nPlayer";
         }
         else if (ScoreManager.NoRoundsWonPlayer < ScoreManager.NoRoundsWonOpponent)
         {
-            RoundsWinner.text = "Winner for rounds won: Opponent";
+            RoundsWinner.text = "Winner for rounds won: \nOpponent";
         }
         else
         {
@@ -33,11 +33,11 @@ public class FinalResults : MonoBehaviour
 
         if (ScoreManager.NoBonusesCollectedPlayer > ScoreManager.NoBonusesCollectedOpponent)
         {
-            BonusWinner.text = "Winner for bonus collection: Player";
+            BonusWinner.text = "Winner for bonus collection: \nPlayer";
         }
         else if (ScoreManager.NoBonusesCollectedPlayer < ScoreManager.NoBonusesCollectedOpponent)
         {
-            BonusWinner.text = "Winner for bonus collection: Opponent";
+            BonusWinner.text = "Winner for bonus collection: \nOpponent";
         }
         else
         {
