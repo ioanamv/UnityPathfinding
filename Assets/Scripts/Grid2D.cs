@@ -103,7 +103,7 @@ public class Grid2D : MonoBehaviour
         }
     }
 
-    public List<Node> GetNeighbours(Node node)
+    public List<Node> GetNeighbors(Node node)
     {
         List<Node> neighbours = new List<Node>();
 

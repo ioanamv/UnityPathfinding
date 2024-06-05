@@ -25,7 +25,7 @@ public class Node : IHeapItem<Node>
 
     public int fCost
     {
-        get { return gCost + gCost; }
+        get { return gCost + hCost; }
     }
 
     public int HeapIndex
