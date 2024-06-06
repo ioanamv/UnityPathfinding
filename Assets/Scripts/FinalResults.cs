@@ -47,6 +47,7 @@ public class FinalResults : MonoBehaviour
 
     public void LoadScene(string sceneName)
     {
+        PathfindingSelector.ResetSelectedAlgorithm();
         SceneManager.LoadScene(sceneName);
     }
 }

@@ -20,7 +20,7 @@ public class Pathfinding : MonoBehaviour
     private List<Node> path;
     private bool endGame;
     private bool printOnce = true;
-
+    private int selectedAlgorithm;
     private void Awake()
     {
         grid = GetComponent<Grid2D>();
@@ -28,11 +28,21 @@ public class Pathfinding : MonoBehaviour
 
     private void Start()
     {
+        selectedAlgorithm = PathfindingSelector.GetSelectedAlgorithm();
         bonuses = GameObject.FindGameObjectsWithTag("Bonus");
         nearestBonus = FindNearestBonus(bonuses);
         if (nearestBonus != null)
         {
-            path = FindPathAstar(opponent.position, nearestBonus.transform.position);
+            if (selectedAlgorithm ==0)
+            {
+                path = FindPathAstar(opponent.position, nearestBonus.transform.position);
+                print("a*");
+            }
+            else if (selectedAlgorithm ==1)
+            {
+                path = FindPathDijkstra(opponent.position, nearestBonus.transform.position);
+                print("dijkstra");
+            }
         }
         playerTurn=true;
     }
@@ -103,7 +113,15 @@ public class Pathfinding : MonoBehaviour
 
     private void RecalcultatePath()
     {
-        path = FindPathAstar(opponent.position, nearestBonus.transform.position);
+        if (selectedAlgorithm == 0)
+        {
+            path = FindPathAstar(opponent.position, nearestBonus.transform.position);
+        }
+        else if (selectedAlgorithm == 1)
+        {
+            path = FindPathDijkstra(opponent.position, nearestBonus.transform.position);
+        }
+
         if (path != null && path.Count > 0)
         {
             Node nextNode = path[0];
@@ -150,7 +168,14 @@ public class Pathfinding : MonoBehaviour
         nearestBonus = FindNearestBonus(bonuses);
         if (nearestBonus != null)
         {
-            path = FindPathAstar(opponent.position, nearestBonus.transform.position);
+            if (selectedAlgorithm == 0)
+            {
+                path = FindPathAstar(opponent.position, nearestBonus.transform.position);
+            }
+            else if (selectedAlgorithm == 1)
+            {
+                path = FindPathDijkstra(opponent.position, nearestBonus.transform.position);
+            }
         }
         playerTurn = false;
     }
