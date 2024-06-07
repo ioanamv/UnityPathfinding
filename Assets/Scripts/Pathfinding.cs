@@ -21,6 +21,7 @@ public class Pathfinding : MonoBehaviour
     private bool endGame;
     private bool printOnce = true;
     private int selectedAlgorithm;
+
     private void Awake()
     {
         grid = GetComponent<Grid2D>();

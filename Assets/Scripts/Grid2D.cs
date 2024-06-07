@@ -21,8 +21,9 @@ public class Grid2D : MonoBehaviour
     public GameObject PointPrefab;
 
     private Vector3 previousPlayerPosition;
+    private int selectedDistr;
 
-    public void GenerateItem(int numberOfItems, GameObject itemPrefab, string tag)
+    public void GenerateItemUniform(int numberOfItems, GameObject itemPrefab, string tag)
     {
         Bounds bounds = this.gridArea.bounds;
 
@@ -39,7 +40,7 @@ public class Grid2D : MonoBehaviour
 
                 newPosition = new Vector3(Mathf.Round(x), Mathf.Round(y), 0);
 
-                Collider2D[] colliders = Physics2D.OverlapBoxAll(newPosition, itemPrefab.GetComponent<SpriteRenderer>().bounds.size, 0);  //(newPosition, 0.1f);
+                Collider2D[] colliders = Physics2D.OverlapBoxAll(newPosition, itemPrefab.GetComponent<SpriteRenderer>().bounds.size, 0); 
                 positionOccupied = colliders.Any(c => c.CompareTag("Player") || c.CompareTag("Bonus") || c.CompareTag("Obstacle") || c.CompareTag("Opponent"));
             }
 
@@ -51,10 +52,61 @@ public class Grid2D : MonoBehaviour
         }
     }
 
+    public void GenerateItemNormal(int numberOfItems, GameObject itemPrefab, string tag)
+    {
+        Bounds bounds = this.gridArea.bounds;
+
+        bonuses = new Transform[numberOfItems];
+        for (int i = 0; i < numberOfItems; i++)
+        {
+            bool positionOccupied = true;
+            Vector3 newPosition = Vector3.zero;
+
+            while (positionOccupied)
+            {
+                float x, y;
+                do
+                {
+                    x = RandomNormal(bounds.center.x, bounds.size.x / 6);
+                    y = RandomNormal(bounds.center.y, bounds.size.y / 6);
+                }
+                while (x < bounds.min.x || x>bounds.max.x || y<bounds.min.y || y>bounds.max.y);
+
+                newPosition = new Vector3(Mathf.Round(x), Mathf.Round(y), 0);
+
+                Collider2D[] colliders = Physics2D.OverlapBoxAll(newPosition, itemPrefab.GetComponent<SpriteRenderer>().bounds.size, 0);
+                positionOccupied = colliders.Any(c => c.CompareTag("Player") || c.CompareTag("Bonus") || c.CompareTag("Obstacle") || c.CompareTag("Opponent"));
+            }
+
+            GameObject item = Instantiate(itemPrefab, newPosition, Quaternion.identity);
+            item.tag = tag;
+            item.transform.position = newPosition;
+
+            bonuses[i] = item.transform;
+        }
+    }
+
+    private float RandomNormal(float mean, float standardDeviation)
+    {
+        float u1 = Random.value;
+        float u2= Random.value;
+        float z=Mathf.Sqrt(-2.0f*Mathf.Log(u1))*Mathf.Sin(2.0f*Mathf.PI*u2); // box-muller
+        return mean+standardDeviation*z;
+    }
+
     private void Start()
     {
         CreateGrid();
-        GenerateItem(numberOfBonuses, PointPrefab, "Bonus");
+        selectedDistr=DistributionSelector.GetSelectedAlgorithm();
+        if (selectedDistr==0)
+        {
+            GenerateItemUniform(numberOfBonuses, PointPrefab, "Bonus");
+        }
+        else if (selectedDistr==1)
+        {
+            GenerateItemNormal(numberOfBonuses, PointPrefab, "Bonus");
+        }
+
         previousPlayerPosition = player.position;
     }
 
