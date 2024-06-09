@@ -24,7 +24,7 @@ public class DistributionSelector : MonoBehaviour
         return selectedDistr;
     }
 
-    public static void ResetSelectedAlgorithm()
+    public static void ResetSelectedDistribution()
     {
         selectedDistr = 0;
     }

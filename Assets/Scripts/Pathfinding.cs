@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Diagnostics;
@@ -29,9 +29,10 @@ public class Pathfinding : MonoBehaviour
 
     private void Start()
     {
-        selectedAlgorithm = PathfindingSelector.GetSelectedAlgorithm();
         bonuses = GameObject.FindGameObjectsWithTag("Bonus");
+        selectedAlgorithm = PathfindingSelector.GetSelectedAlgorithm();
         nearestBonus = FindNearestBonus(bonuses);
+
         if (nearestBonus != null)
         {
             if (selectedAlgorithm ==0)
@@ -122,7 +123,7 @@ public class Pathfinding : MonoBehaviour
         {
             path = FindPathDijkstra(opponent.position, nearestBonus.transform.position);
         }
-
+       
         if (path != null && path.Count > 0)
         {
             Node nextNode = path[0];
@@ -223,7 +224,6 @@ public class Pathfinding : MonoBehaviour
                 sw.Stop();
                 print("path found: " + sw.ElapsedMilliseconds + " ms");
 
-                RetracePath(startNode, targetNode);
                 return RetracePath(startNode, targetNode);
             }
 
@@ -279,7 +279,6 @@ public class Pathfinding : MonoBehaviour
                 sw.Stop();
                 print("path found: " + sw.ElapsedMilliseconds + " ms");
 
-                RetracePath(startNode, targetNode);
                 return RetracePath(startNode, targetNode);
             }
 

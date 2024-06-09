@@ -49,6 +49,7 @@ public class FinalResults : MonoBehaviour
     {
         ScoreManager.ResetScores();
         PathfindingSelector.ResetSelectedAlgorithm();
+        DistributionSelector.ResetSelectedDistribution();
         SceneManager.LoadScene(sceneName);
     }
 }
