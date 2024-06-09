@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.ComponentModel;
 
 public class Pathfinding : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class Pathfinding : MonoBehaviour
     private bool endGame;
     private bool printOnce = true;
     private int selectedAlgorithm;
+    public bool noPlayer=true;
 
     private void Awake()
     {
@@ -57,7 +59,14 @@ public class Pathfinding : MonoBehaviour
         {
             if (playerTurn)
             {
-                MovePlayer();
+                if (noPlayer == false)
+                {
+                    MovePlayer();
+                }
+                else
+                {
+                    playerTurn = false;
+                }
             }
             else
             {
@@ -86,6 +95,25 @@ public class Pathfinding : MonoBehaviour
 
     private void MoveOpponent(List<Node> path)
     {
+        if (noPlayer)
+        {
+            if (path == null || path.Count == 0)
+            {
+                nearestBonus = FindNearestBonus(bonuses);
+                if (nearestBonus != null)
+                {
+                    if (selectedAlgorithm == 0)
+                    {
+                        path = FindPathAstar(opponent.position, nearestBonus.transform.position);
+                    }
+                    else
+                    {
+                        path = FindPathDijkstra(opponent.position, nearestBonus.transform.position);
+                    }
+                }
+            }
+        }
+
         if (path != null && path.Count > 0)
         {
             Node nextNode = path[0];
@@ -123,7 +151,7 @@ public class Pathfinding : MonoBehaviour
         {
             path = FindPathDijkstra(opponent.position, nearestBonus.transform.position);
         }
-       
+
         if (path != null && path.Count > 0)
         {
             Node nextNode = path[0];
