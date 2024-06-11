@@ -21,6 +21,10 @@ public class Node : IHeapItem<Node>
         worldPosition = _worldPosition;
         gridX = _gridX;
         gridY = _gridY;
+
+        gCost = int.MaxValue;
+        hCost = 0;
+        parent = null;
     }
 
     public int fCost

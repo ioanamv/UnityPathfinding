@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.ComponentModel;
+using UnityEngine.SceneManagement;
 
 public class Pathfinding : MonoBehaviour
 {
@@ -22,7 +23,8 @@ public class Pathfinding : MonoBehaviour
     private bool endGame;
     private bool printOnce = true;
     private int selectedAlgorithm;
-    public bool noPlayer=true;
+    public static bool noPlayer=true;
+    public string sceneName;
 
     private void Awake()
     {
@@ -31,6 +33,11 @@ public class Pathfinding : MonoBehaviour
 
     private void Start()
     {
+        if (noPlayer)
+        {
+            player.gameObject.SetActive(false);
+        }   
+        
         bonuses = GameObject.FindGameObjectsWithTag("Bonus");
         selectedAlgorithm = PathfindingSelector.GetSelectedAlgorithm();
         nearestBonus = FindNearestBonus(bonuses);
@@ -90,6 +97,11 @@ public class Pathfinding : MonoBehaviour
                 ScoreManager.PrintFinalState(2);
             }
             ScoreManager.ResetScoresForNextLevel();
+
+            if (noPlayer)
+            {
+                SceneManager.LoadScene(sceneName);
+            }
         }
     }
 
