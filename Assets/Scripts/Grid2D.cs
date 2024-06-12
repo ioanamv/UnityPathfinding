@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using MathNet.Numerics.Distributions;
 
 public class Grid2D : MonoBehaviour
 {
@@ -70,7 +71,7 @@ public class Grid2D : MonoBehaviour
                     x = RandomNormal(bounds.center.x, bounds.size.x / 6);
                     y = RandomNormal(bounds.center.y, bounds.size.y / 6);
                 }
-                while (x < bounds.min.x || x>bounds.max.x || y<bounds.min.y || y>bounds.max.y);
+                while (x < bounds.min.x || x > bounds.max.x || y < bounds.min.y || y > bounds.max.y);
 
                 newPosition = new Vector3(Mathf.Round(x), Mathf.Round(y), 0);
 
@@ -88,10 +89,9 @@ public class Grid2D : MonoBehaviour
 
     private float RandomNormal(float mean, float standardDeviation)
     {
-        float u1 = Random.value;
-        float u2= Random.value;
-        float z=Mathf.Sqrt(-2.0f*Mathf.Log(u1))*Mathf.Sin(2.0f*Mathf.PI*u2); // box-muller
-        return mean+standardDeviation*z;
+        double u = Random.value;
+        double z = Normal.InvCDF(mean, standardDeviation, u);
+        return (float)z;
     }
 
     private void Start()
