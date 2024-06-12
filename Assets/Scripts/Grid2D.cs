@@ -89,8 +89,8 @@ public class Grid2D : MonoBehaviour
 
     private float RandomNormal(float mean, float standardDeviation)
     {
-        double u = Random.value;
-        double z = Normal.InvCDF(mean, standardDeviation, u);
+        double p = Random.value;
+        double z = Normal.InvCDF(mean, standardDeviation, p);
         return (float)z;
     }
 

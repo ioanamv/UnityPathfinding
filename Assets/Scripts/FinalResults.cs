@@ -43,6 +43,11 @@ public class FinalResults : MonoBehaviour
         {
             BonusWinner.text = "Draw by number of bonuses collected";
         }
+        if (Pathfinding.noPlayer)
+        {
+            StartLv1.stopwatch.Stop();
+            print("game time:" + StartLv1.stopwatch.Elapsed.TotalSeconds + " s");
+        }
     }
 
     public void LoadScene(string sceneName)
