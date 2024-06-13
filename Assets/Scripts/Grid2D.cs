@@ -159,26 +159,22 @@ public class Grid2D : MonoBehaviour
     {
         List<Node> neighbours = new List<Node>();
 
-        // Vecinul de sus
-        if (node.gridY < gridSize.y - 1)
+        if (node.gridY < gridSize.y - 1) //vecinul de sus
         {
             neighbours.Add(grid[node.gridX, node.gridY + 1]);
         }
 
-        // Vecinul din dreapta
-        if (node.gridX < gridSize.x - 1)
+        if (node.gridX < gridSize.x - 1) //vecinul din dreapta
         {
             neighbours.Add(grid[node.gridX + 1, node.gridY]);
         }
 
-        // Vecinul de jos
-        if (node.gridY > 0)
+        if (node.gridY > 0) //vecinul de jos
         {
             neighbours.Add(grid[node.gridX, node.gridY - 1]);
         }
 
-        // Vecinul din stanga
-        if (node.gridX > 0)
+        if (node.gridX > 0) //vecinul din stanga
         {
             neighbours.Add(grid[node.gridX - 1, node.gridY]);
         }
@@ -188,9 +184,6 @@ public class Grid2D : MonoBehaviour
 
     public Node NodeFromWorldPoint(Vector3 worldPosition)
     {
-        //float percentX = (worldPosition.x + gridSize.x / 2) / gridSize.x;
-        //float percentY = (worldPosition.y + gridSize.y / 2) / gridSize.y;
-
         float percentX = (worldPosition.x - transform.position.x + gridSize.x * nodeSize.x / 2) / (gridSize.x * nodeSize.x);
         float percentY = (worldPosition.y - transform.position.y + gridSize.y * nodeSize.y / 2) / (gridSize.y * nodeSize.y);
 

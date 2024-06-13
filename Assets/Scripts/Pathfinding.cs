@@ -252,6 +252,10 @@ public class Pathfinding : MonoBehaviour
 
         Heap<Node> openSet = new Heap<Node>(grid.MaxSize);
         HashSet<Node> closedSet = new HashSet<Node>();
+
+        startNode.gCost = 0;
+        startNode.hCost = GetDistance(startNode, targetNode);
+
         openSet.Add(startNode);
 
         while (openSet.Count > 0)

@@ -40,11 +40,18 @@ public class Node : IHeapItem<Node>
 
     public int CompareTo(Node nodeToCompare)
     {
-        int compare = fCost.CompareTo(nodeToCompare.fCost);
-        if (compare == 0)
+        if (PathfindingSelector.GetSelectedAlgorithm() == 0) //A*
         {
-            compare = hCost.CompareTo(nodeToCompare.hCost);
+            int compare = fCost.CompareTo(nodeToCompare.fCost);
+            if (compare == 0)
+            {
+                compare = hCost.CompareTo(nodeToCompare.hCost);
+            }
+            return -compare;
         }
-        return -compare; 
+        else //dijkstra
+        {
+            return -gCost.CompareTo(nodeToCompare.gCost);
+        }
     }
 }
