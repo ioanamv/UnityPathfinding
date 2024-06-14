@@ -11,6 +11,7 @@ public class FinalResults : MonoBehaviour
 {
     public TextMeshProUGUI playerBonuses, opponentBonuses, playerRounds, opponentRounds, BonusWinner, RoundsWinner;
     public Button playAgain;
+    private int repeats=1;
 
     private void Start()
     {
@@ -48,6 +49,8 @@ public class FinalResults : MonoBehaviour
             StartLv1.totalStopwatch.Stop();
             print("game time:" + StartLv1.totalStopwatch.Elapsed.TotalSeconds + " s");
         }
+
+        PlayAgain();
     }
 
     public void LoadScene(string sceneName)
@@ -56,5 +59,14 @@ public class FinalResults : MonoBehaviour
         PathfindingSelector.ResetSelectedAlgorithm();
         DistributionSelector.ResetSelectedDistribution();
         SceneManager.LoadScene(sceneName);
+    }
+
+    public void PlayAgain()
+    {
+        if (repeats>0)
+        {
+            repeats--;
+            SceneManager.LoadScene("Level1");
+        }
     }
 }
