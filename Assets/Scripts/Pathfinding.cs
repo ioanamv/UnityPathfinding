@@ -47,12 +47,12 @@ public class Pathfinding : MonoBehaviour
             if (selectedAlgorithm ==0)
             {
                 path = FindPathAstar(opponent.position, nearestBonus.transform.position);
-                print("a*");
+                //print("a*");
             }
             else if (selectedAlgorithm ==1)
             {
                 path = FindPathDijkstra(opponent.position, nearestBonus.transform.position);
-                print("dijkstra");
+                //print("dijkstra");
             }
         }
         playerTurn=true;
@@ -82,7 +82,7 @@ public class Pathfinding : MonoBehaviour
         }
         else if (printOnce)
         {
-            print("Player score: " + ScoreManager.PlayerScore + "\nOpponent score: " + ScoreManager.OpponentScore);
+            //print("Player score: " + ScoreManager.PlayerScore + "\nOpponent score: " + ScoreManager.OpponentScore);
             printOnce = false;
             if (ScoreManager.PlayerScore > ScoreManager.OpponentScore)
             {
@@ -266,7 +266,7 @@ public class Pathfinding : MonoBehaviour
             if (currentNode == targetNode)
             {
                 sw.Stop();
-                print("path found: " + sw.ElapsedMilliseconds + " ms");
+                //print("path found: " + sw.ElapsedMilliseconds + " ms");
 
                 return RetracePath(startNode, targetNode);
             }
@@ -321,7 +321,7 @@ public class Pathfinding : MonoBehaviour
             if (currentNode == targetNode)
             {
                 sw.Stop();
-                print("path found: " + sw.ElapsedMilliseconds + " ms");
+                //print("path found: " + sw.ElapsedMilliseconds + " ms");
 
                 return RetracePath(startNode, targetNode);
             }

@@ -45,8 +45,8 @@ public class FinalResults : MonoBehaviour
         }
         if (Pathfinding.noPlayer)
         {
-            StartLv1.stopwatch.Stop();
-            print("game time:" + StartLv1.stopwatch.Elapsed.TotalSeconds + " s");
+            StartLv1.totalStopwatch.Stop();
+            print("game time:" + StartLv1.totalStopwatch.Elapsed.TotalSeconds + " s");
         }
     }
 

@@ -6,19 +6,22 @@ using UnityEngine.SceneManagement;
 
 public class StartLv1 : MonoBehaviour
 {
-    public static Stopwatch stopwatch;
+    public static Stopwatch totalStopwatch;
 
     private void Start()
     {
         if (Pathfinding.noPlayer)
         {
-            stopwatch = new Stopwatch();
+            totalStopwatch = new Stopwatch();
         }
     }
 
     public void LoadScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
-        stopwatch.Start();
+        if (Pathfinding.noPlayer)
+        {
+            totalStopwatch.Start();
+        }
     }
 }
