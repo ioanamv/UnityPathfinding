@@ -7,7 +7,7 @@ using System.Linq;
 using System.ComponentModel;
 using UnityEngine.SceneManagement;
 
-public class Pathfinding : MonoBehaviour
+public class MovementManager : MonoBehaviour
 {
     Grid2D grid;
     public Transform opponent;
@@ -23,7 +23,7 @@ public class Pathfinding : MonoBehaviour
     private bool endGame;
     private bool printOnce = true;
     private int selectedAlgorithm;
-    public static bool noPlayer=true;
+    public static bool noPlayer;
     public string sceneName;
 
     private void Awake()

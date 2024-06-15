@@ -10,10 +10,11 @@ public class LvlTime : MonoBehaviour
 {
     public string prevLvl;
     public static Stopwatch swLvl = new Stopwatch();
+    private List<double> levelTimes = new List<double>();
 
     private void Awake()
     {
-        if (Pathfinding.noPlayer)
+        if (MovementManager.noPlayer)
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
@@ -21,7 +22,7 @@ public class LvlTime : MonoBehaviour
 
     private void Start()
     {
-        if (Pathfinding.noPlayer)
+        if (MovementManager.noPlayer)
         {
             swLvl.Start();
         }
@@ -29,11 +30,13 @@ public class LvlTime : MonoBehaviour
 
     private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
     {
-        if (Pathfinding.noPlayer)
+        if (MovementManager.noPlayer)
         {
             swLvl.Stop();
+            levelTimes.Add(swLvl.Elapsed.TotalSeconds);
+
             SaveToFile(prevLvl, swLvl.Elapsed.TotalSeconds);
-            print(prevLvl + " : " + swLvl.Elapsed.TotalSeconds);
+            
             swLvl.Reset();
             swLvl.Start();
         }
@@ -42,7 +45,7 @@ public class LvlTime : MonoBehaviour
     private void SaveToFile(string level, double elapsedTime)
     {
         //string filePath = Application.dataPath + "/level_times.csv";
-        string directoryPath = "D:\\"; 
+        string directoryPath = "D:\\";
         string filePath = Path.Combine(directoryPath, "level_times.csv");
 
         if (!File.Exists(filePath))
@@ -51,7 +54,7 @@ public class LvlTime : MonoBehaviour
             {
                 using (StreamWriter writer = new StreamWriter(filePath, false))
                 {
-                    writer.WriteLine("Level,Elapsed Time (seconds)");
+                    writer.WriteLine("Level 0, Level 1, Level 2, Level 3, Level 4, Level 5");
                 }
             }
             catch (IOException e)
@@ -65,7 +68,9 @@ public class LvlTime : MonoBehaviour
         {
             using (StreamWriter writer = new StreamWriter(filePath, true))
             {
-                writer.WriteLine($"{level},{elapsedTime}");
+                if (level != "Level 5")
+                    writer.Write($"{elapsedTime},");
+                else writer.Write($"{elapsedTime} \n");
             }
         }
         catch (IOException e)

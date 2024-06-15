@@ -11,7 +11,6 @@ public class FinalResults : MonoBehaviour
 {
     public TextMeshProUGUI playerBonuses, opponentBonuses, playerRounds, opponentRounds, BonusWinner, RoundsWinner;
     public Button playAgain;
-    private int repeats=1;
 
     private void Start()
     {
@@ -44,13 +43,16 @@ public class FinalResults : MonoBehaviour
         {
             BonusWinner.text = "Draw by number of bonuses collected";
         }
-        if (Pathfinding.noPlayer)
+        if (MovementManager.noPlayer)
         {
-            StartLv1.totalStopwatch.Stop();
-            print("game time:" + StartLv1.totalStopwatch.Elapsed.TotalSeconds + " s");
+            StartObservingAlg.totalStopwatch.Stop();
+            print("game time:" + StartObservingAlg.totalStopwatch.Elapsed.TotalSeconds + " s");
         }
 
-        PlayAgain();
+        if (MovementManager.noPlayer)
+        {
+            PlayAgain();
+        }
     }
 
     public void LoadScene(string sceneName)
@@ -63,9 +65,9 @@ public class FinalResults : MonoBehaviour
 
     public void PlayAgain()
     {
-        if (repeats>0)
+        if (StartObservingAlg.repeats -1 > 0)
         {
-            repeats--;
+            StartObservingAlg.repeats--;
             SceneManager.LoadScene("Level1");
         }
     }
