@@ -10,7 +10,6 @@ public class LvlTime : MonoBehaviour
 {
     public string prevLvl;
     public static Stopwatch swLvl = new Stopwatch();
-    private List<double> levelTimes = new List<double>();
 
     private void Awake()
     {
@@ -33,9 +32,11 @@ public class LvlTime : MonoBehaviour
         if (MovementManager.noPlayer)
         {
             swLvl.Stop();
-            levelTimes.Add(swLvl.Elapsed.TotalSeconds);
 
-            SaveToFile(prevLvl, swLvl.Elapsed.TotalSeconds);
+            if (prevLvl!=null)
+            {
+                SaveToFile(prevLvl, swLvl.Elapsed.TotalSeconds);
+            }
             
             swLvl.Reset();
             swLvl.Start();
@@ -54,7 +55,7 @@ public class LvlTime : MonoBehaviour
             {
                 using (StreamWriter writer = new StreamWriter(filePath, false))
                 {
-                    writer.WriteLine("Level 0, Level 1, Level 2, Level 3, Level 4, Level 5");
+                    writer.WriteLine("Level 1, Level 2, Level 3, Level 4, Level 5");
                 }
             }
             catch (IOException e)
